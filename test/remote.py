@@ -19,16 +19,16 @@ GPIO.setup(21, GPIO.OUT)
 while True:
     if GPIO.input(20):
         GPIO.output(21, False)
-        #print("off")
-        #time.sleep(1)
+        print("off")
+        time.sleep(1)
     else:
         GPIO.output(21, True)
         #mycursor.execute("insert into er_table values()")
         #db.commit()
         print("on")
-        while not GPIO.input(20):
-            continue
-        #time.sleep(1)
+        #while not GPIO.input(20):
+        #    continue
+        time.sleep(1)
 
 #mycursor.execute("insert into er_table values()")
 #db.commit()
