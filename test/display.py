@@ -116,67 +116,78 @@ def nine():
     return
 
 cont = 0
-if cont == 0:
-    zero()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 1:
-    one()
+def numcheck():
+    #while True:
+    #time.sleep(1)
+    if cont == 0:
+        zero()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 2:
-    two()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 1:
+        one()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 3:
-    three()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 2:
+        two()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 4:
-    four()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 3:
+        three()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 5:
-    five()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 4:
+        four()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 6:
-    six()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 5:
+        five()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 7:
-    seven()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 6:
+        six()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 8:
-    eight()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 7:
+        seven()
 
-time.sleep(1)
-cont = cont + 1
-if cont == 9:
-    nine()
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 8:
+        eight()
+
+    #time.sleep(1)
+    #cont = cont + 1
+    if cont == 9:
+        nine()
+        #cont = 0
+
+    return
+
+#numcheck()
 
 while True:
     if GPIO.input(20):
         GPIO.output(21, False)
         print("Se ha detectado la continuidad del sensor a las "+ str(datetime.now().time()))
+        numcheck()
         while GPIO.input(20):
             continue
         time.sleep(1)
     else:
         cont = cont  + 1
         GPIO.output(21, True)
+        numcheck()
+        if cont == 9:
+            cont = 0
         print("Se ha detectado una interrupcion de sensor a las", str(datetime.now().time()), cont)
-        if cont == 0:
-            zero()
         while not GPIO.input(20):
             continue
         time.sleep(1)
