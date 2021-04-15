@@ -22,13 +22,13 @@ import time
 import mysql.connector
 from datetime import datetime
 
-#db = mysql.connector.connect(
-#        host = "192.168.202.137",
-#        user = "labpi",
-#        passwd = "mochis",
-#        database = "lab7")
+db = mysql.connector.connect(
+        host = "192.168.202.137",
+        user = "labpi",
+        passwd = "mochis",
+        database = "lab7")
 
-#mycursor = db.cursor()
+mycursor = db.cursor()
 
 #mycursor.execute("describe er_table")
 #mycursor.execute("select * from er_table")
@@ -54,24 +54,29 @@ while True:
         print("Bienvenido al car wash, pase adelante")
         while GPIO.input(20):
             continue
-        #time.sleep(1)
     else:
         car_start = time.time()
-        time_start = datetime.now().time()
+        #time_start = datetime.now().time()
+        time_start = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
         while not GPIO.input(20):
             continue
         car_end = time.time()
         car_size = car_end - car_start
+        size = ""
 
         if car_size < 3:
             print("Ha ingresado un carro small a las:", str(time_start))
+            size = "small"
         elif car_size < 5:
             print("Ha ingresado un carro mediano a las:", str(time_start))
+            size = "mediano"
         else:
             print("Ha ingresado un carro grande a las:", str(time_start))
+            size = "grande"
 
         # INICIO DE CICLO
         print("Iniciando secuencia de lavado...")
+        print()
         time.sleep(2)
 
         # 1era LAVADO
@@ -110,23 +115,21 @@ while True:
         time.sleep(3)
         GPIO.output(5, False)
 
+        total_cost = 36
+
+        if size == "mediano":
+            total_cost = total_cost * 2
+        elif size == "grande":
+            total_cost = total_cost * 3
+
+        #DB
+        time_end = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
+        print("El vehicula ha terminado el lavado a las:", str(time_end))
+        time.sleep(2)
+        mycursor.execute("insert into car values('{}','{}', 3, 3, 3, 3, 3, 3, {}, '{}')".format(str(time_start), size, total_cost, str(time_end)))
+        db.commit()
+
+
         print("El lavado del vehiculo ha finalizado, esperamos vuelva pronto!")
         time.sleep(2)
 
-        #print("size of car is",int(car_size))
-        #print("el carro ha entrado a las", str(time_start))
-
-        #mycursor.execute("insert into er_table values(default, default, 'interrupcion')")
-        #db.commit()
-        #print("Se ha detectado una interrupcion de sensor a las "+ str(datetime.now().time()))
-        #time.sleep(1)
-
-#mycursor.execute("insert into er_table values()")
-#db.commit()
-
-#mycursor.execute("select * from er_table")
-
-#mycursor.execute("describe er_table")
-
-#for i in mycursor:
-#    print(i)
