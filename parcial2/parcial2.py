@@ -30,11 +30,6 @@ db = mysql.connector.connect(
 
 mycursor = db.cursor()
 
-#mycursor.execute("describe er_table")
-#mycursor.execute("select * from er_table")
-
-#for i in mycursor:
-#    print(i)
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -56,7 +51,6 @@ while True:
             continue
     else:
         car_start = time.time()
-        #time_start = datetime.now().time()
         time_start = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
         while not GPIO.input(20):
             continue
