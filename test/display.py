@@ -171,7 +171,7 @@ def numcheck():
 
     return
 
-#numcheck()
+numcheck()
 
 while True:
     if GPIO.input(20):
@@ -180,15 +180,15 @@ while True:
         numcheck()
         while GPIO.input(20):
             continue
-        time.sleep(1)
+        #time.sleep(1)
     else:
         cont = cont  + 1
         GPIO.output(21, True)
-        numcheck()
-        if cont == 9:
+        if cont == 10:
             cont = 0
+        numcheck()
         print("Se ha detectado una interrupcion de sensor a las", str(datetime.now().time()), cont)
         while not GPIO.input(20):
             continue
-        time.sleep(1)
+        #time.sleep(1)
 
