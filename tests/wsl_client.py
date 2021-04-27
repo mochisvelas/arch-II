@@ -1,9 +1,9 @@
 import requests
 
 def post_to_server(payload):
-    ip = 'http://18.218.129.43:8080/'
+    ip = 'http://18.223.102.148:8080/'
     r = requests.post(ip, json=payload)
-    print(r)
+    print(r.json())
     return
 
 payload = {'20':'1'}
