@@ -25,7 +25,10 @@ GPIO.setup(12, GPIO.IN) # SWITCH 4
 def post_to_server(payload):
     ip = 'http://3.142.120.56:8080/'
     r = requests.post(ip, json=payload)
-    binary = r.json()['display']
+    r = r.json()
+    return r
+
+def display(binary):
     GPIO.output(0, binary[0] == '1')
     GPIO.output(1, binary[1] == '1')
     GPIO.output(7, binary[2] == '1')
@@ -35,6 +38,20 @@ def post_to_server(payload):
     GPIO.output(6, binary[6] == '1')
     GPIO.output(9, binary[7] == '1')
     return
+
+# def post_to_server(payload):
+#     ip = 'http://3.142.120.56:8080/'
+#     r = requests.post(ip, json=payload)
+#     binary = r.json()['display']
+#     GPIO.output(0, binary[0] == '1')
+#     GPIO.output(1, binary[1] == '1')
+#     GPIO.output(7, binary[2] == '1')
+#     GPIO.output(8, binary[3] == '1')
+#     GPIO.output(4, binary[4] == '1')
+#     GPIO.output(5, binary[5] == '1')
+#     GPIO.output(6, binary[6] == '1')
+#     GPIO.output(9, binary[7] == '1')
+#     return
 
 def get_binary():
     bi_0 = 0
