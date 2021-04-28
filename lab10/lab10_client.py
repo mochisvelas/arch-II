@@ -16,7 +16,7 @@ GPIO.setup(6, GPIO.OUT) # DISPLAY G - yellow
 GPIO.setup(9, GPIO.OUT) # LED - green
 
 ## INPUT
-GPIO.setup(25, GPIO.IN) # MASTER
+#GPIO.setup(25, GPIO.IN) # MASTER
 GPIO.setup(21, GPIO.IN) # SWITCH 1
 GPIO.setup(20, GPIO.IN) # SWITCH 2
 GPIO.setup(16, GPIO.IN) # SWITCH 3
@@ -81,13 +81,20 @@ def get_binary():
 
 while True:
 
-    if GPIO.input(25):
-        payload = {'pinary':get_binary()}
-        post_to_server(payload)
-        while GPIO.input(20):
-            continue
-    else:
-        while not GPIO.input(20):
-            continue
+    payload = {'pinary':get_binary()}
+    r = post_to_server(payload)
+
+    if r['active'] == 'True':
+        binary = r['display']
+        display(binary)
+
+    # if GPIO.input(25):
+    #     payload = {'pinary':get_binary()}
+    #     post_to_server(payload)
+    #     while GPIO.input(20):
+    #         continue
+    # else:
+    #     while not GPIO.input(20):
+    #         continue
 
 GPIO.cleanup()
