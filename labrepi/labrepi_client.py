@@ -1,0 +1,104 @@
+import requests
+import RPi.GPIO as GPIO
+
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+## OUTPUT
+GPIO.setup(0, GPIO.OUT) # DISPLAY A - orange
+GPIO.setup(1, GPIO.OUT) # DISPLAY B - blue
+GPIO.setup(7, GPIO.OUT) # DISPLAY C - brown
+GPIO.setup(8, GPIO.OUT) # DISPLAY D - purple
+GPIO.setup(4, GPIO.OUT) # DISPLAY E - white
+GPIO.setup(5, GPIO.OUT) # DISPLAY F - black
+GPIO.setup(6, GPIO.OUT) # DISPLAY G - yellow
+GPIO.setup(9, GPIO.OUT) # LED - green
+GPIO.setup(10, GPIO.OUT) # RELAY
+
+## INPUT
+GPIO.setup(25, GPIO.IN) # MASTER
+GPIO.setup(21, GPIO.IN) # SWITCH 1
+GPIO.setup(20, GPIO.IN) # SWITCH 2
+GPIO.setup(16, GPIO.IN) # SWITCH 3
+GPIO.setup(12, GPIO.IN) # SWITCH 4
+
+def post_to_server(payload):
+    ip = 'http://3.142.120.56:8080/'
+    r = requests.post(ip, json=payload)
+    r = r.json()
+    return r
+
+def display(binary):
+    GPIO.output(0, binary[0] == '1')
+    GPIO.output(1, binary[1] == '1')
+    GPIO.output(7, binary[2] == '1')
+    GPIO.output(8, binary[3] == '1')
+    GPIO.output(4, binary[4] == '1')
+    GPIO.output(5, binary[5] == '1')
+    GPIO.output(6, binary[6] == '1')
+    GPIO.output(9, binary[7] == '1')
+    return
+
+def bulb(decimal):
+    times = decimal
+    GPIO.output(10, False)
+
+    while True:
+        time.sleep(1)
+        GPIO.output(10, True)
+        time.sleep(1)
+        GPIO.output(10, False)
+
+        times -= times
+        
+        if times <= 0:
+            break
+
+    return
+
+def get_binary():
+    bi_0 = 0
+    bi_1 = 0
+    bi_2 = 0
+    bi_3 = 0
+
+    # SWITCH 1
+    if GPIO.setup(21):
+        bi_0 = 1
+
+    # SWITCH 2
+    if GPIO.setup(20):
+        bi_1 = 1
+
+    # SWITCH 3
+    if GPIO.setup(16):
+        bi_2 = 1
+
+    # SWITCH 4
+    if GPIO.setup(12):
+        bi_3 = 1
+
+    pinary = str(bi_0 + bi_1 + bi_2 + bi_3)
+
+    return pinary
+
+while True:
+
+    if GPIO.input(25):
+        payload = {'pinary':get_binary()}
+        r = post_to_server(payload)
+
+        binary = r['display']
+        display(binary)
+
+        decimal = r['decimal']
+        bulb(decimal)
+
+        while GPIO.input(20):
+            continue
+    else:
+        while not GPIO.input(20):
+            continue
+
+GPIO.cleanup()
