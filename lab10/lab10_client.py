@@ -16,11 +16,11 @@ GPIO.setup(6, GPIO.OUT) # DISPLAY G - yellow
 GPIO.setup(9, GPIO.OUT) # LED - green
 
 ## INPUT
-#GPIO.setup(25, GPIO.IN) # MASTER
-GPIO.setup(21, GPIO.IN) # SWITCH 1
-GPIO.setup(20, GPIO.IN) # SWITCH 2
-GPIO.setup(16, GPIO.IN) # SWITCH 3
-GPIO.setup(12, GPIO.IN) # SWITCH 4
+GPIO.setup(25, GPIO.IN) # MASTER - green
+GPIO.setup(21, GPIO.IN) # SWITCH 1 - grey
+GPIO.setup(20, GPIO.IN) # SWITCH 2 - pink
+GPIO.setup(16, GPIO.IN) # SWITCH 3 - orange
+GPIO.setup(12, GPIO.IN) # SWITCH 4 - yellow
 
 def post_to_server(payload):
     ip = 'http://3.142.120.56:8080/'
@@ -60,41 +60,47 @@ def get_binary():
     bi_3 = 0
 
     # SWITCH 1
-    if GPIO.setup(21):
+    if GPIO.input(21):
         bi_0 = 1
 
     # SWITCH 2
-    if GPIO.setup(20):
+    if GPIO.input(20):
         bi_1 = 1
 
     # SWITCH 3
-    if GPIO.setup(16):
+    if GPIO.input(16):
         bi_2 = 1
 
     # SWITCH 4
-    if GPIO.setup(12):
+    if GPIO.input(12):
         bi_3 = 1
 
-    pinary = str(bi_0 + bi_1 + bi_2 + bi_3)
+    pinary = str(bi_0) + str(bi_1) + str(bi_2) + str(bi_3)
 
     return pinary
 
 while True:
 
-    payload = {'pinary':get_binary()}
-    r = post_to_server(payload)
+    #payload = {'pinary':get_binary()}
+    #r = post_to_server(payload)
 
-    if r['active'] == 'True':
-        binary = r['display']
-        display(binary)
+#    if r['active'] == 'True':
+#        binary = r['display']
+#        display(binary)
 
-    # if GPIO.input(25):
-    #     payload = {'pinary':get_binary()}
-    #     post_to_server(payload)
-    #     while GPIO.input(20):
-    #         continue
-    # else:
-    #     while not GPIO.input(20):
-    #         continue
+     if GPIO.input(25):
+
+         payload = {'pinary':get_binary()}
+         r = post_to_server(payload)
+         print(r)
+         binary = r['display']
+         display(binary)
+
+         while GPIO.input(25):
+             continue
+
+     else:
+         while not GPIO.input(25):
+             continue
 
 GPIO.cleanup()

@@ -1,5 +1,6 @@
 import requests
 import RPi.GPIO as GPIO
+import time
 
 
 GPIO.setwarnings(False)
@@ -45,12 +46,15 @@ def bulb(decimal):
     GPIO.output(10, False)
 
     while True:
-        time.sleep(1)
+        #time.sleep(1)
         GPIO.output(10, True)
+        print('on')
         time.sleep(1)
         GPIO.output(10, False)
+        time.sleep(1)
+        print('off')
 
-        times -= times
+        times = times - 1
         
         if times <= 0:
             break
@@ -64,50 +68,54 @@ def get_binary():
     bi_3 = 0
 
     # SWITCH 1
-    if GPIO.setup(21):
+    if GPIO.input(21):
         bi_0 = 1
 
     # SWITCH 2
-    if GPIO.setup(20):
+    if GPIO.input(20):
         bi_1 = 1
 
     # SWITCH 3
-    if GPIO.setup(16):
+    if GPIO.input(16):
         bi_2 = 1
 
     # SWITCH 4
-    if GPIO.setup(12):
+    if GPIO.input(12):
         bi_3 = 1
 
-    pinary = str(bi_0 + bi_1 + bi_2 + bi_3)
+    pinary = str(bi_0) + str(bi_1) + str(bi_2) + str(bi_3)
 
     return pinary
 
 while True:
-    payload = {'pinary':get_binary()}
-    r = post_to_server(payload)
+    #payload = {'pinary':get_binary()}
+    #r = post_to_server(payload)
 
-    if r['active'] == 'True':
-        binary = r['display']
-        display(binary)
+    #if r['active'] == 'True':
+    #    binary = r['display']
+    #    display(binary)
 
-        decimal = r['decimal']
-        bulb(decimal)
+#        decimal = r['decimal']
+#        bulb(decimal)
 
-    # if GPIO.input(25):
-    #     payload = {'pinary':get_binary()}
-    #     r = post_to_server(payload)
+     if GPIO.input(25):
+         try:
+             payload = {'pinary':get_binary()}
+             r = post_to_server(payload)
+             print(r)
 
-    #     binary = r['display']
-    #     display(binary)
+             binary = r['display']
+             display(binary)
 
-    #     decimal = r['decimal']
-    #     bulb(decimal)
+             decimal = r['decimal']
+             bulb(decimal)
+         except:
+             print('error gg')
 
-    #     while GPIO.input(20):
-    #         continue
-    # else:
-    #     while not GPIO.input(20):
-    #         continue
+         while GPIO.input(25):
+             continue
+     else:
+         while not GPIO.input(25):
+             continue
 
 GPIO.cleanup()
