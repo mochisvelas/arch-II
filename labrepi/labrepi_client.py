@@ -88,16 +88,6 @@ def get_binary():
     return pinary
 
 while True:
-    #payload = {'pinary':get_binary()}
-    #r = post_to_server(payload)
-
-    #if r['active'] == 'True':
-    #    binary = r['display']
-    #    display(binary)
-
-#        decimal = r['decimal']
-#        bulb(decimal)
-
      if GPIO.input(25):
          try:
              payload = {'pinary':get_binary()}

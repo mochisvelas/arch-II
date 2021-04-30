@@ -1,0 +1,50 @@
+    DATA    EQU 0X21
+    ORG	0X00
+    GOTO    START
+
+START
+    ;BANK 0
+    BCF     STATUS, 5
+    BCF     STATUS, 6
+
+    MOVLW   B'01000001'
+    MOVWF   ADCON0
+
+    ;BANK 1
+    BSF     STATUS, 5
+    BCF     STATUS, 6
+
+    CLRF    TRISA
+    CLRF    TRISB
+    CLRF    TRISC
+    CLRF    TRISD
+    CLRF    TRISE
+
+    ;MOVLW   B'00000000'
+    MOVLW   B'00000111'
+    MOVWF   OPTION_REG
+
+    MOVLW   B'00001110'
+    MOVWF   ADCON1
+
+    BSF     TRISA, 0
+
+    ;BANK 0
+    BCF     STATUS, 5
+    BCF     STATUS, 6
+
+LOOP
+    BTFSS   INTCON, T0IF
+    GOTO LOOP
+    BCF     INTCON, T0IF
+    BSF     ADCON0, GO
+WAIT
+    BTFSC   ADCON0, GO
+    GOTO WAIT
+    MOVF    ADRESH, W
+    MOVWF   PORTB
+	;MOVF 	ADRESL, W
+	;MOVWF 	PORTD
+    GOTO LOOP
+
+END
