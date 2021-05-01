@@ -62,28 +62,7 @@ def bulb(decimal):
     return
 
 def get_binary():
-    bi_0 = 0
-    bi_1 = 0
-    bi_2 = 0
-    bi_3 = 0
-
-    # SWITCH 1
-    if GPIO.input(21):
-        bi_0 = 1
-
-    # SWITCH 2
-    if GPIO.input(20):
-        bi_1 = 1
-
-    # SWITCH 3
-    if GPIO.input(16):
-        bi_2 = 1
-
-    # SWITCH 4
-    if GPIO.input(12):
-        bi_3 = 1
-
-    pinary = str(bi_0) + str(bi_1) + str(bi_2) + str(bi_3)
+    pinary = str(int(GPIO.input(21))) + str(int(GPIO.input(20))) + str(int(GPIO.input(16))) + str(int(GPIO.input(12)))
 
     return pinary
 
