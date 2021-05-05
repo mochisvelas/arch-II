@@ -1,17 +1,38 @@
-import sys
+import RPi.GPIO as GPIO
+from datetime import datetime
 import time
 
-stop_countdown = False
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+cont = 11
+
+er_cont = 0
+
+GPIO.setup(0, GPIO.IN)
+GPIO.setup(1, GPIO.IN) 
 
 def countdown():
-    global stop_countdown
-    for i in range(10,0,-1):
-        print(i)
-        if stop_countdown:
-            break
-        # sys.stdout.write(str(i)+' ')
-        # sys.stdout.flush()
+    global er_cont
+    for i in range(cont):
+        print('seconds:', i)
+        if not GPIO.input(1):
+            return
         time.sleep(1)
+        if not GPIO.input(1):
+            return
+
+    #print('ending...')
+    er_cont = 0
     return
 
-countdown()
+while True:
+    if not GPIO.input(1):
+        er_cont = er_cont + 1
+
+    while not GPIO.input(1):
+        continue
+
+    print('er_cont:', er_cont)
+
+    countdown()
