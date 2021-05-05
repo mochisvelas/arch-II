@@ -18,11 +18,11 @@ GPIO.setup(9, GPIO.OUT) # LED - green
 GPIO.setup(10, GPIO.OUT) # RELAY
 
 ## INPUT
-GPIO.setup(25, GPIO.IN) # MASTER
-GPIO.setup(21, GPIO.IN) # SWITCH 1
-GPIO.setup(20, GPIO.IN) # SWITCH 2
-GPIO.setup(16, GPIO.IN) # SWITCH 3
-GPIO.setup(12, GPIO.IN) # SWITCH 4
+GPIO.setup(25, GPIO.IN) # black
+GPIO.setup(21, GPIO.IN) # pink
+GPIO.setup(20, GPIO.IN) # grey
+GPIO.setup(16, GPIO.IN) # red
+GPIO.setup(12, GPIO.IN) # yellow
 
 def post_to_server(payload):
     ip = 'http://3.142.120.56:8080/'
