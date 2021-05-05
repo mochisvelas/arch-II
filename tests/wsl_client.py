@@ -2,13 +2,17 @@ import requests
 import time
 
 def post_to_server(payload):
-    ip = 'http://3.142.120.56:8080/'
+    ip = 'http://18.116.70.113:8080/'
     r = requests.post(ip, json=payload)
     print(r.json())
     return
 
 while True:
-    payload = {'pinary':'1000'}
-    post_to_server(payload)
+    payload = {'pival':'not_waiting','wait':'0'}
+    try:
+        post_to_server(payload)
+    except:
+        print('error gg')
+
     time.sleep(1)
 
